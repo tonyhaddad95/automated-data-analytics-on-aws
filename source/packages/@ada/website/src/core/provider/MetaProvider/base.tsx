@@ -6,8 +6,10 @@ import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 import { ENV_TEST } from '$config';
 import { I18nProvider } from '$strings'
 import { IndexingProvider } from '$core/provider/IndexingProvider';
-import { NorthStarThemeProvider } from 'aws-northstar';
+// eslint-disable-next-line no-restricted-imports
+import {NorthStarThemeProvider, ThemeOptions} from 'aws-northstar';
 import { UserProvider } from '../UserProvider';
+import {getTheme} from "aws-northstar/themes/default";
 import React, { PropsWithChildren } from 'react';
 
 const Router = (ENV_TEST ? MemoryRouter : BrowserRouter) as new (...args: any[]) => any;
@@ -22,6 +24,7 @@ export interface BaseMetaProviderProps extends PropsWithChildren<{}> {
   indexing?: React.ComponentType;
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const BaseMetaProvider = ({
   children,
   api,
@@ -39,9 +42,44 @@ export const BaseMetaProvider = ({
   const UserProviderComponent = user || UserProvider;
   const IndexingProviderComponent = indexing || IndexingProvider;
 
+  const theme: ThemeOptions = {
+    ...getTheme(),
+    overrides: {
+      ...getTheme().overrides,
+      MuiButton: {
+        ...getTheme().overrides?.MuiButton,
+        containedPrimary: {
+          ...getTheme().overrides?.MuiButton?.containedPrimary,
+          "&:hover": {
+            backgroundColor: "#49BCD7",
+            borderColor: "#49BCD7",
+          },
+          backgroundColor: "#49BCD7",
+          borderColor: "#49BCD7",
+        }
+      }
+    },
+    palette: {
+      ...getTheme().palette,
+      primary: {
+        ...getTheme().palette?.primary,
+        main: '#2F3440',
+      },
+      secondary: {
+        ...getTheme().palette?.secondary,
+        main: "#49BCD7",
+        light: '#69d7f0',
+        dark: "#49BCD7",
+      },
+      text: {
+        ...getTheme().palette?.text,
+      }
+    }
+  }
+
   return (
     <I18nProvider locale="en">
-      <NorthStarThemeProviderComponent>
+      <NorthStarThemeProviderComponent theme={theme}>
         <AmplifyProviderComponent>
           <RouterComponent>
             <ApiProviderComponent>

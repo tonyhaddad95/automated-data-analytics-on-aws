@@ -19,6 +19,7 @@ import { useHasNoAccess, useIsAdmin, useIsRootAdmin } from '$core/provider/UserP
 import { useI18nContext } from '$strings';
 import HomeIcon from '@material-ui/icons/Home';
 import React, { useMemo } from 'react';
+import logo from '../../data-one-logo-light.png'
 
 const AppLayout: React.FC<AppLayoutProps> = ({ children, ...props }) => {
   return (
@@ -105,7 +106,8 @@ export const App: React.FC = () => {
     <AppLayout
       header={
         <Header
-          title={LL.CONST.APP_NAME()}
+          logoPath={logo}
+          title={''}
           search={<GlobalSearch />}
           rightContent={
             <Inline>
