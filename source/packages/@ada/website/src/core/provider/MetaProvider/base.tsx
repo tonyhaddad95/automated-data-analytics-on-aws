@@ -11,6 +11,7 @@ import {NorthStarThemeProvider, ThemeOptions} from 'aws-northstar';
 import { UserProvider } from '../UserProvider';
 import {getTheme} from "aws-northstar/themes/default";
 import React, { PropsWithChildren } from 'react';
+import {createMuiTheme} from "@material-ui/core";
 
 const Router = (ENV_TEST ? MemoryRouter : BrowserRouter) as new (...args: any[]) => any;
 
@@ -42,8 +43,12 @@ export const BaseMetaProvider = ({
   const UserProviderComponent = user || UserProvider;
   const IndexingProviderComponent = indexing || IndexingProvider;
 
-  const theme: ThemeOptions = {
+  const theme: ThemeOptions = createMuiTheme({
     ...getTheme(),
+    typography: {
+      ...getTheme().typography,
+      fontFamily: 'Montserrat',
+    },
     overrides: {
       ...getTheme().overrides,
       MuiButton: {
@@ -75,7 +80,9 @@ export const BaseMetaProvider = ({
         ...getTheme().palette?.text,
       }
     }
-  }
+  })
+
+  console.log('getTheme().typography',getTheme().typography)
 
   return (
     <I18nProvider locale="en">
